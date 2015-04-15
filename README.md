@@ -23,3 +23,4 @@ PING www.google.com (74.125.136.99) 56(84) bytes of data.
 *Run as user dockeru and with suid removed*     
 ~$ docker run -u dockeru --rm -v /dev/log:/dev/log -t -i cleanbits ping www.google.com    
 ping: icmp open socket: Operation not permitted    
+    
