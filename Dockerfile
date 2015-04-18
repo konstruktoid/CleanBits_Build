@@ -12,4 +12,5 @@ RUN \
 	useradd --system --no-create-home --user-group --shell /bin/false dockeru && \
 	/bin/bash /tmp/cleanBits.sh
 
-CMD ["bash"]
+ENTRYPOINT ["/bin/bash"]
+CMD []
