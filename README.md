@@ -1,5 +1,5 @@
 *Docker security cheat sheet*     
-http://konstruktoid.net/2015/03/01/docker-security-cheat-sheet/     
+https://github.com/konstruktoid/Docker/blob/master/Security/CheatSheet.md     
 	
 *Build the _cleanbits_ container*    
 ~$ docker build --rm -t cleanbits konstruktoid/cleanbits 
