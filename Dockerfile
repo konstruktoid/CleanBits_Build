@@ -1,12 +1,13 @@
 # Force autobuild 1433201249
 
-FROM debian:wheezy
+FROM konstruktoid/debian:wheezy
 
 ADD https://raw.githubusercontent.com/konstruktoid/Docker/master/Security/cleanBits.sh /tmp/cleanBits.sh
 
 RUN \
     apt-get update && \
     apt-get -y upgrade && \
+    apt-get -y install iputils-ping && \
     apt-get -y clean && \
     apt-get -y autoremove && \
     rm -rf /var/lib/apt/lists/* \
@@ -17,5 +18,4 @@ RUN \
     useradd --system --no-create-home --user-group --shell /bin/false dockeru && \
     /bin/bash /tmp/cleanBits.sh
 
-ENTRYPOINT ["/bin/bash"]
-CMD []
+CMD ["/bin/bash"]
