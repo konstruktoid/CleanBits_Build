@@ -1,5 +1,3 @@
-# Force autobuild 1439929933
-
 FROM konstruktoid/debian:wheezy
 
 ADD https://raw.githubusercontent.com/konstruktoid/Docker/master/Security/cleanBits.sh /tmp/cleanBits.sh
