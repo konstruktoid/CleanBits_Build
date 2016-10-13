@@ -1,6 +1,6 @@
 FROM konstruktoid/debian:wheezy
 
-LABEL org.label-schema.name="cleanbits"
+LABEL org.label-schema.name="cleanbits" \
       org.label-schema.vcs-url="git://github.com/konstruktoid/CleanBits_Build.git"
 
 ADD https://raw.githubusercontent.com/konstruktoid/Docker/master/Security/cleanBits.sh /tmp/cleanBits.sh
