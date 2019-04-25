@@ -1,4 +1,4 @@
-FROM konstruktoid/debian:wheezy
+FROM konstruktoid/debian:jessie
 
 LABEL org.label-schema.name="cleanbits" \
       org.label-schema.vcs-url="git://github.com/konstruktoid/CleanBits_Build.git"

@@ -1,35 +1,62 @@
 [![](https://images.microbadger.com/badges/image/konstruktoid/cleanbits.svg)](https://microbadger.com/images/konstruktoid/cleanbits "Cleanbits")
 
-### Docker security cheat sheet
-https://github.com/konstruktoid/Docker/blob/master/Security/CheatSheet.md
+# Docker cap and suid bits test
 
-### Build the _cleanbits_ container
-`~$ docker build --rm -t cleanbits konstruktoid/cleanbits`
+## Docker security cheat sheet
 
-### Drop all capabilites and run ping as root
+https://github.com/konstruktoid/Docker/blob/master/Security/CheatSheet.adoc
+
+## Build the cleanbits container
+
+`$ docker build --no-cache -t cleanbits -t konstruktoid/cleanbits -f Dockerfile .`
+
+## Drop all capabilites and run ping as root
+
+With `cap_net_raw+ep` on `ping`:
+
 ```
-~$ docker run --rm -v /dev/log:/dev/log --cap-drop all -t -i cleanbits ping www.google.com
+$ docker run --rm -v /dev/log:/dev/log --cap-drop all -t -i cleanbits ping 1.1.1.1
+standard_init_linux.go:207: exec user process caused "operation not permitted"
+```
+
+Without capabilites on `ping`:
+
+```
+$ docker run --rm -v /dev/log:/dev/log --cap-drop all -t -i cleanbits ping 1.1.1.1
 ping: icmp open socket: Operation not permitted
 ```
 
-### Drop all capabilities except net_raw as root
+## Drop all capabilities except net_raw as root
+
 ```
-$ docker run --rm -v /dev/log:/dev/log --cap-drop all --cap-add net_raw -t -i cleanbits ping www.google.com
-PING www.google.com (74.125.71.147) 56(84) bytes of data.    
-64 bytes from 74.125.71.147: icmp_seq=1 ttl=43 time=48.7 ms    
-64 bytes from 74.125.71.147: icmp_seq=2 ttl=43 time=45.8 ms    
+$ docker run --rm -v /dev/log:/dev/log --cap-drop all --cap-add net_raw -t -i cleanbits ping -c 3 1.1.1.1
+PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
+64 bytes from 1.1.1.1: icmp_seq=1 ttl=61 time=9.07 ms
+64 bytes from 1.1.1.1: icmp_seq=2 ttl=61 time=14.1 ms
+64 bytes from 1.1.1.1: icmp_seq=3 ttl=61 time=10.4 ms
+
+--- 1.1.1.1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 9.072/11.229/14.165/2.152 ms
 ```
 
-### Default run with all capabilites
+## Default run with all capabilites
+
 ```
-~$ docker run --rm -v /dev/log:/dev/log -t -i cleanbits ping www.google.com
-PING www.google.com (74.125.136.99) 56(84) bytes of data.
-64 bytes from ea-in-f99.1e100.net (74.125.136.99): icmp_seq=1 ttl=50 time=5.68 ms
-64 bytes from ea-in-f99.1e100.net (74.125.136.99): icmp_seq=2 ttl=50 time=5.45 ms
+$ docker run --rm -v /dev/log:/dev/log -t -i cleanbits ping -c 3 1.1.1.1
+PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
+64 bytes from 1.1.1.1: icmp_seq=1 ttl=61 time=8.93 ms
+64 bytes from 1.1.1.1: icmp_seq=2 ttl=61 time=12.8 ms
+64 bytes from 1.1.1.1: icmp_seq=3 ttl=61 time=12.5 ms
+
+--- 1.1.1.1 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 8.934/11.445/12.836/1.778 ms
 ```
 
-### Run as user dockeru and with suid removed
+## Run as user dockeru, with suid and capabilites removed
+
 ```
-~$ docker run -u dockeru --rm -v /dev/log:/dev/log -t -i cleanbits ping www.google.com
-ping: icmp open socket: Operation not permitted    
+$ docker run -u dockeru --rm -v /dev/log:/dev/log -t -i cleanbits ping 1.1.1.1
+ping: icmp open socket: Operation not permitted
 ```
