@@ -1,4 +1,4 @@
-FROM konstruktoid/debian:stretch
+FROM konstruktoid/debian:buster
 
 LABEL org.label-schema.name="cleanbits" \
       org.label-schema.vcs-url="git://github.com/konstruktoid/CleanBits_Build.git"
@@ -8,7 +8,7 @@ ADD https://raw.githubusercontent.com/konstruktoid/Docker/master/Security/cleanB
 RUN \
     apt-get update && \
     apt-get -y upgrade && \
-    apt-get -y install iputils-ping && \
+    apt-get -y install libcap2-bin iputils-ping && \
     apt-get -y clean && \
     rm -rf /var/lib/apt/lists/* \
       /usr/share/doc /usr/share/doc-base \
